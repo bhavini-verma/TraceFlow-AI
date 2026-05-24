@@ -2,6 +2,7 @@ package com.fitness.userservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.fitness.userservice.exception.EmailAlreadyExistsException;
 
 import com.fitness.userservice.dto.RegisterRequest;
 import com.fitness.userservice.dto.UserResponse;
@@ -20,7 +21,7 @@ public class UserService {
 
     public UserResponse register(RegisterRequest request) {
         if (repository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException("Email already exists");
         }
         User user = new User();
         user.setEmail(request.getEmail());
