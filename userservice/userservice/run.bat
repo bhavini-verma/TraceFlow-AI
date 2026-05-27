@@ -1,6 +1,6 @@
 @echo off
-rem Kill any process using port 8080
-for /f "tokens=5" %%a in ('netstat -ano ^| findstr :8080 ^| findstr LISTENING') do (
+rem Kill any process using port 8082
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :8082 ^| findstr LISTENING') do (
     echo Killing process with PID %%a
     taskkill /F /PID %%a >nul 2>&1
 )

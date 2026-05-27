@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import com.fitness.activityservice.dto.ActivityRequest;
 import com.fitness.activityservice.dto.ActivityResponse;
 import com.fitness.activityservice.service.ActivityService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/activities")
@@ -18,5 +19,10 @@ public class ActivityController {
     public ResponseEntity<ActivityResponse> trackActivity(@RequestBody ActivityRequest request) {
         ActivityResponse response = activityService.trackActivity(request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{activityId}")
+    public ResponseEntity<ActivityResponse> getActivity(@PathVariable String activityId) {
+        return ResponseEntity.ok(activityService.getActivityById(activityId));
     }
 }

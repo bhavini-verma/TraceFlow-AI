@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import com.fitness.activityservice.dto.ActivityRequest;
 import com.fitness.activityservice.dto.ActivityResponse;
 import com.fitness.activityservice.model.Activity;
+import java.util.List;
 import com.fitness.activityservice.repository.ActivityRepository;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +39,18 @@ public class ActivityService {
         response.setCreatedAt(activity.getCreatedAt());
         response.setUpdatedAt(activity.getUpdatedAt());
         return response;
+    }
+
+    public List<ActivityResponse> getUserActivities(String userId) {
+        List<Activity> activities = activityRepository.findByUserId(userId);
+        return activities.stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    public ActivityResponse getActivityById(String activityId) {
+        return activityRepository.findById(activityId)
+            .map(this::mapToResponse)
+            .orElseThrow(() -> new RuntimeException("Activity not found: " + activityId));
     }
 }
