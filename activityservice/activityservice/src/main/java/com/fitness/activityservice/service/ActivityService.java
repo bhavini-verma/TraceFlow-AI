@@ -13,8 +13,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ActivityService {
     private final ActivityRepository activityRepository;
+    private final UserValidateService userValidateService;
 
     public ActivityResponse trackActivity(ActivityRequest request) {
+        boolean isValidUser = userValidateService.isUserValid(request.getUserId());
+        if (!isValidUser) {
+            throw new RuntimeException("User not found: " + request.getUserId());
+        }
         Activity activity = Activity.builder()
                 .userId(request.getUserId())
                 .type(request.getType())
@@ -50,7 +55,7 @@ public class ActivityService {
 
     public ActivityResponse getActivityById(String activityId) {
         return activityRepository.findById(activityId)
-            .map(this::mapToResponse)
-            .orElseThrow(() -> new RuntimeException("Activity not found: " + activityId));
+                .map(this::mapToResponse)
+                .orElseThrow(() -> new RuntimeException("Activity not found: " + activityId));
     }
 }
